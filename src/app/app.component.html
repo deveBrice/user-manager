@@ -1,25 +1,54 @@
-<form [formGroup]="usersForm" (ngSubmit)="AddUser()">
-  <div class="user-form-container">
-    <div class="user-form">
-      <mat-form-field appearance="fill">
-        <mat-label>Nom</mat-label>
-        <input type="text" matInput formControlName="nom">
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Prenom</mat-label>
-        <input type="text" matInput formControlName="prenom">
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Telephone</mat-label>
-        <input type="number" matInput formControlName="telephone">
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Regions</mat-label>
-        <mat-select formControlName="region">
-          <mat-option *ngFor="let dr of districtList$ | async" [value]="dr.nom">{{dr.nom}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-     </div> 
+<div class="user-form-container">
+  <form [formGroup]="usersForm" (ngSubmit)="AddUser()">
+      <div class="user-form">
+        <mat-form-field appearance="fill">
+          <mat-label>Nom</mat-label>
+          <input type="text" matInput formControlName="nom">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Prenom</mat-label>
+          <input type="text" matInput formControlName="prenom">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Telephone</mat-label>
+          <input type="number" matInput minlength="10" formControlName="telephone">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Regions</mat-label>
+          <mat-select formControlName="region">
+            <mat-option *ngFor="let dr of districtList$ | async" [value]="dr.nom">{{dr.nom}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div> 
+    <button mat-button type="submit" class="mat-raised-button" color="primary"> Ajouter</button>
+  </form>
+  <div class="container-filter">
+  <div class="filterUsers">
+    <mat-form-field appearance="fill">
+      <mat-label>Filtre</mat-label>
+      <input type="text" matInput [formControl]="filterUser">
+    </mat-form-field>
   </div>
-  <button mat-button type="submit" class="mat-raised-button" color="primary"> Ajouter</button>
-</form>
+  
+  <div class="users-table">
+    <Table>
+      <thead>
+        <th>Nom</th>
+        <th>Prenom</th>
+        <th>Telephone</th>
+        <th>Regions</th>
+        <th>Supprimer</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let du of displayUsers$ | async; let i=index">
+          <td>{{du.nom}}</td>
+          <td>{{du.prenom}}</td>
+          <td>{{du.telephone}}</td>
+          <td>{{du.region}}</td>
+          <td><button mat-button class="mat-raised-button" color="warn" (click)="deleteUser(i, displayUsers$)">Supprimer</button></td>
+        </tr>
+      </tbody>
+    </Table>
+   </div>
+  </div>
+</div>
